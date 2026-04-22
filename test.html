@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Tracker Test</title>
+</head>
+<body>
+    <h1>JavaScript Functions Lab - Login Tracker</h1>
+    <p>Check the console (F12) or look below for results</p>
+    
+    <button onclick="runTests()">▶ Run Login Tests</button>
+    
+    <h3>Results:</h3>
+    <pre id="output" style="background:#f0f0f0; padding:15px; border-radius:5px;"></pre>
+
+    <script>
+        // Your login tracker code
+        function createLoginTracker(userInfo) {
+            let attemptCount = 0;
+            
+            const loginAttempt = (passwordAttempt) => {
+                attemptCount++;
+                
+                if (attemptCount > 3) {
+                    return "Account locked due to too many failed login attempts";
+                }
+                
+                if (passwordAttempt === userInfo.password) {
+                    return "Login successful";
+                } else {
+                    return `Login failed. Attempt ${attemptCount} of 3`;
+                }
+            };
+            
+            return loginAttempt;
+        }
+
+        function runTests() {
+            let output = "";
+            
+            output += "=== Test 1: Successful Login ===\n";
+            const user1 = createLoginTracker({ username: "john_doe", password: "pass123" });
+            output += user1("wrong") + "\n";
+            output += user1("pass123") + "\n\n";
+            
+            output += "=== Test 2: Account Locks After 3 Failures ===\n";
+            const user2 = createLoginTracker({ username: "jane_smith", password: "secure456" });
+            output += user2("wrong1") + "\n";
+            output += user2("wrong2") + "\n";
+            output += user2("wrong3") + "\n";
+            output += user2("secure456") + "\n\n";
+            
+            output += "=== Test 3: Login on Last Attempt ===\n";
+            const user3 = createLoginTracker({ username: "bob", password: "letmein" });
+            output += user3("wrong") + "\n";
+            output += user3("wrong2") + "\n";
+            output += user3("letmein") + "\n\n";
+            
+            output += "=== Test 4: New Instance Resets Counter ===\n";
+            const user4 = createLoginTracker({ username: "alice", password: "wonderland" });
+            output += user4("wonderland") + " (success on first try)\n";
+            
+            document.getElementById('output').textContent = output;
+            
+            // Also log to console
+            console.log(output);
+        }
+        
+        // Auto-run when page loads
+        runTests();
+    </script>
+</body>
+</html>
